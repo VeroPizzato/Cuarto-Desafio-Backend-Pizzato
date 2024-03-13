@@ -9,36 +9,29 @@ const filenameProd = `${__dirname}/../../productos.json`
 const productsManager = new ProductManager(filenameProd)
 
 router.get('/home', async (_, res) => {
-    try {
-        // leer el archivo products.json
-        const listadoProductos = await productsManager.getProducts()
+    // leer el archivo products.json
+    const products = await productsManager.getProducts()
 
-        // renderizar home.handlebars y pasar los datos de los productos
-        res.render('home', {
-            title: 'Home',
-            listadoProductos
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Error al cargar los productos' });
-    }
+    // renderizar home.handlebars y pasar los datos de los productos
+    res.render('home', {
+        title: 'Home',
+        styles:['home.css'],
+        products
+    });
 })
 
 router.get('/realtimeproducts', async (_, res) => {
-    try {
-        const listadoProductos = await productsManager.getProducts()
+    const products = await productsManager.getProducts()
 
-        res.render('realTimeProducts', {
-            title: 'Productos en tiempo real',
-            listadoProductos,
-            useWS: true, // Establecemos useWS en verdadero
-            scripts: [
-                'realTimeProducts.js'
-            ]
-        });
-
-    } catch (error) {
-        res.status(500).json({ error: 'Error al cargar los productos' });
-    }
+    res.render('realTimeProducts', {
+        title: 'Productos en tiempo real',
+        styles:['home.css'],
+        products,
+        useWS: true, // Establecemos useWS en verdadero
+        scripts: [
+            'realTimeProducts.js'
+        ]        
+    });
 });
 
 module.exports = router

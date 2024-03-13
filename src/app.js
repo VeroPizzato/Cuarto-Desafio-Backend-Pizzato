@@ -4,7 +4,12 @@ const viewsRouter = require('./routes/views')
 const { Server } = require('socket.io')
 
 const cartsRouter = require('./routes/carts');
-const { productsRouter, productsManager } = require('./routes/products');
+const productsRouter = require('./routes/products');
+
+// const ProductManager = require('../ProductManager')
+
+// const filenameProd = `${__dirname}/../../productos.json`
+// const productsManager = new ProductManager(filenameProd)
 
 const app = express();
 
@@ -35,18 +40,18 @@ wsServer.on('connection', (clientSocket) => {
 
     clientSocket.on('newProduct', (product) => {
 
-        // 1) Agregarlo a ProductManager
-        productsManager.addProduct(
-            product.title,
-            product.description,
-            +product.price,
-            product.thumbnail,
-            product.code,
-            +product.stock,
-            product.status,
-            product.category)
-        // 2) Notificar al resto de los clientes (notificar con WS que se creó un producto nuevo)
-        wsServer.emit('newProduct', product)  // msje que se envia a los clientes del front que estan escuchando este evento
+        // // 1) Agregarlo a ProductManager
+        // productsManager.addProduct(
+        //     product.title,
+        //     product.description,
+        //     +product.price,
+        //     product.thumbnail,
+        //     product.code,
+        //     +product.stock,
+        //     product.status,
+        //     product.category)
+        // // 2) Notificar al resto de los clientes (notificar con WS que se creó un producto nuevo)
+        // wsServer.emit('newProduct', product)  // msje que se envia a los clientes del front que estan escuchando este evento
 
     })
 })

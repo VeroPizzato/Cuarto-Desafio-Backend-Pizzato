@@ -195,4 +195,4 @@ const main = async () => {
 }
 main()
 
-module.exports = {router, productsManager}
+module.exports = router
