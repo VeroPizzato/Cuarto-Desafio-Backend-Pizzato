@@ -59,7 +59,7 @@ router.post('/', validarNuevoCarrito, async (req, res) => {
     const nuevoCarrito = await carritoManager.addCart(products);
     
     res.status(201).json({ message: "Carrito agregado correctamente", carrito: nuevoCarrito })
- })
+})
 
 router.get('/:cid', async (req, res) => {
     let cidCart = +req.params.cid;
@@ -85,7 +85,7 @@ router.post('/:cid/product/:pid', ValidarCarritoExistente, ValidarProductoExiste
     let quantity = 1;       
 
     let nuevoProd = await carritoManager.addProductToCart(idCart, idProd, quantity);
-   
+
     res.status(200).json(nuevoProd)    // HTTP 200 OK
 })
 
