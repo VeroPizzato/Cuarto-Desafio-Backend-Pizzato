@@ -32,12 +32,16 @@
           <label>Categoría:</label>
           <input type="text" class="form-control my-2" name="category" required>
         </div>
-        <div>
-          <label>Estado:</label>
-          <label>Verdadero:</label>
-          <input type="radio" class="my-2" name="status" value="true" required>
-          <label>Falso:</label>
-          <input type="radio" class="my-2" name="status" value="false" required>
+        <div class="mb-3">
+          <label class="mr-3">Estado:</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="status" id="statusTrue" value="true" required>
+            <label class="form-check-label mr-3" for="statusTrue">Verdadero</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="status" id="statusFalse" value="false" required>
+            <label class="form-check-label mr-3" for="statusFalse">Falso</label>
+          </div>
         </div>
         <div class="d-grid gap-2 text-center">
           <button type="submit" class="btn btn-secondary my-2">Agregar Producto</button>
