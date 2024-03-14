@@ -6,31 +6,31 @@
       <form id="add-product-form" action="/realtimeproducts" method="post">
         <div>
           <label>Título:</label>
-          <input type="text" class="form-control my-2" name="title" required>
+          <input type="text" id="tit" class="form-control my-2" name="title" required>
         </div>
         <div>
           <label>Descripción:</label>
-          <input type="text" class="form-control my-2" name="description" required>
+          <input type="text" id="desc" class="form-control my-2" name="description" required>
         </div>
         <div>
           <label>Precio:</label>
-          <input type="number" class="form-control my-2" name="price" required>
+          <input type="number" id="pre" class="form-control my-2" name="price"  onChange={(e) => validarEntradaTelefono(e)} required>
         </div>
         <div>
           <label>Imágenes:</label>
-          <input type="text" class="form-control my-2" name="thumbnail" required>
+          <input type="text" id="imag" class="form-control my-2" name="thumbnail" required>
         </div>
         <div>
           <label>Código:</label>
-          <input type="text" class="form-control my-2" name="code" required>
+          <input type="text" id="cod" class="form-control my-2" name="code" required>
         </div>
         <div>
           <label>Stock:</label>
-          <input type="number" class="form-control my-2" name="stock" required>
+          <input type="number" id="stock" class="form-control my-2" name="stock" required>
         </div>
         <div>
           <label>Categoría:</label>
-          <input type="text" class="form-control my-2" name="category" required>
+          <input type="text" id="cat" class="form-control my-2" name="category" required>
         </div>
         <div>
           <label>Estado:</label>
