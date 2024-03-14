@@ -84,9 +84,9 @@ router.post('/:cid/product/:pid', ValidarCarritoExistente, ValidarProductoExiste
     let idProd = +req.params.pid;
     let quantity = 1;       
 
-    let nuevoProd = await carritoManager.addProductToCart(idCart, idProd, quantity);
+    await carritoManager.addProductToCart(idCart, idProd, quantity);
 
-    res.status(200).json(nuevoProd)    // HTTP 200 OK
+    res.status(200).json(`Se agregaron ${quantity} producto/s con ID ${idProd} al carrito con ID ${idCart}`)    // HTTP 200 OK
 })
 
 const main = async () => {

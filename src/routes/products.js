@@ -162,9 +162,9 @@ router.get('/:pid', (req, res) => {
 router.post('/', validarNuevoProducto, async (req, res) => {
     const producto = req.body
 
-    const nuevoProducto = await productsManager.addProduct(producto.title, producto.description, producto.price, producto.thumbnail, producto.code, producto.stock, producto.status, producto.category)
-
-    res.status(201).json({ message: "Producto agregado correctamente", producto: nuevoProducto })
+    await productsManager.addProduct(producto.title, producto.description, producto.price, producto.thumbnail, producto.code, producto.stock, producto.status, producto.category)
+    
+    res.status(201).json({ message: `Producto con Id ${producto.id} agregado correctamente` })
 })
 
 router.put('/:pid', validarProdActualizado, async (req, res) => {
@@ -173,7 +173,7 @@ router.put('/:pid', validarProdActualizado, async (req, res) => {
 
     await productsManager.updateProduct(productID, producto);
 
-    return res.status(200).json({ message: "Producto actualizado correctamente" });
+    return res.status(200).json({ message: `Producto con Id ${producto.id} actualizado correctamente` });
 });
 
 router.delete('/:pid', async (req, res) => {

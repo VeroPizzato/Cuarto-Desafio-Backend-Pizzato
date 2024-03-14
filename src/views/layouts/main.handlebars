@@ -17,9 +17,9 @@
     {{#if useWS }}
      <script src="/socket.io/socket.io.js"></script>
      {{/if}}
-    {{!-- desde la ruta en express, podremos incluir 1 o varios archivos js indicando su nombre en scripts --}}
-    {{#each scripts }}    
-    <script src="js/{{this}}"></script>
-    {{/each}}
+     {{!-- desde la ruta en express, podremos incluir 1 o varios archivos js indicando su nombre en scripts --}}
+     {{#each scripts }}    
+     <script src="js/{{this}}"></script>
+     {{/each}}
 </body>
 </html>

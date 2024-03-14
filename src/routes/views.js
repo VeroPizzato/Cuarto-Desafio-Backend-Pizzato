@@ -14,7 +14,7 @@ router.get('/home', async (_, res) => {
 
         res.render('home', {
             title: 'Home',
-            styles: ['home.css'],
+            styles: ['productos.css'],
             products
         });
     } catch (error) {
@@ -28,7 +28,7 @@ router.get('/realtimeproducts', async (_, res) => {
 
         res.render('realTimeProducts', {
             title: 'Productos en tiempo real',
-            styles: ['home.css'],
+            styles: ['productos.css'],
             products,
             useWS: true,
             scripts: [
@@ -41,28 +41,32 @@ router.get('/realtimeproducts', async (_, res) => {
 });
 
 router.post('/realtimeproducts', async (req, res) => {
-    try {              
+    try {        
+        const product = req.body      
         // Agregar el producto en el ProductManager
-        const productAdded = await productsManager.addProduct(
-            req.body.title, 
-            req.body.description, 
-            +req.body.price, 
-            req.body.thumbnail, 
-            req.body.code, 
-            +req.body.stock, 
-            req.body.status, 
-            req.body.category);
-        if (productAdded) {
+        await productsManager.addProduct(
+            product.title, 
+            product.description, 
+            +product.price, 
+            product.thumbnail, 
+            product.code, 
+            +product.stock, 
+            product.status, 
+            product.category);
+     
+            console.log(product)
             // Notificar a los clientes mediante WS que se agrego un producto nuevo             
-            req.app.get('ws').emit('newProduct', productAdded)            
-            res.status(201).json({ message: "Producto agregado correctamente" })
-        }
-        else {
-            return res.status(500).json({ error: 'Error al agregar el producto' });
-        }
+            req.app.get('ws').emit('newProduct', product)            
+            res.status(201).json({ message: "Producto agregado correctamente" })       
     } catch (error) {
         console.error('Error al agregar el producto:', error);
     }
+});
+
+router.get('/newProduct', async (_, res) => {
+    res.render('newProduct', {
+        title: 'Nuevo Producto',
+        })
 });
 
 module.exports = router
