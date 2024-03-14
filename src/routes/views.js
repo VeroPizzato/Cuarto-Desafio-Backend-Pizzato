@@ -44,6 +44,8 @@ router.post('/realtimeproducts', async (req, res) => {
     try {        
         const product = req.body      
         // Agregar el producto en el ProductManager
+        // Convertir el valor status a booleano
+        var statusBoolean = (product.status === 'true');
         await productsManager.addProduct(
             product.title, 
             product.description, 
@@ -51,10 +53,9 @@ router.post('/realtimeproducts', async (req, res) => {
             product.thumbnail, 
             product.code, 
             +product.stock, 
-            product.status, 
-            product.category);
-     
-            console.log(product)
+            statusBoolean, 
+            product.category);     
+           
             // Notificar a los clientes mediante WS que se agrego un producto nuevo             
             req.app.get('ws').emit('newProduct', product)            
             res.status(201).json({ message: "Producto agregado correctamente" })       

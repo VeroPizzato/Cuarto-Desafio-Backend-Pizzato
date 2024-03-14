@@ -174,5 +174,16 @@
 		"stock": 12,
 		"status": true,
 		"category": "componente"
+	},
+	{
+		"id": 17,
+		"title": "safdghlñ",
+		"description": "klv.n,vmnb",
+		"price": 2426473,
+		"thumbnail": "images/micro.png",
+		"code": "ahklk-",
+		"stock": 2,
+		"status": true,
+		"category": "xvjk,"
 	}
 ]
