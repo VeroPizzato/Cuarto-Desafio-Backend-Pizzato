@@ -47,7 +47,7 @@ router.post('/realtimeproducts', async (req, res) => {
             req.body.title, 
             req.body.description, 
             +req.body.price, 
-            req.body.thumbnails, 
+            req.body.thumbnail, 
             req.body.code, 
             +req.body.stock, 
             req.body.status, 
