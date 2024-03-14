@@ -41,11 +41,17 @@ router.get('/realtimeproducts', async (_, res) => {
 });
 
 router.post('/realtimeproducts', async (req, res) => {
-    try {
-        const { title, description, price, thumbnails, code, stock, status, category } = req.body;
-                
+    try {              
         // Agregar el producto en el ProductManager
-        const productAdded = await productsManager.addProduct(title, description, price, thumbnails, code, stock, status, category);
+        const productAdded = await productsManager.addProduct(
+            req.body.title, 
+            req.body.description, 
+            +req.body.price, 
+            req.body.thumbnails, 
+            req.body.code, 
+            +req.body.stock, 
+            req.body.status, 
+            req.body.category);
         if (productAdded) {
             // Notificar a los clientes mediante WS que se agrego un producto nuevo             
             req.app.get('ws').emit('newProduct', productAdded)            
