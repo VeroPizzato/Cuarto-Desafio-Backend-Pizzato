@@ -4,7 +4,7 @@ const viewsRouter = require('./routes/views')
 const { Server } = require('socket.io')
 
 const cartsRouter = require('./routes/carts');
-const productsRouter = require('./routes/products');
+const { router: productsRouter, productsManager } = require('./routes/products');
 
 const app = express();
 
@@ -32,6 +32,21 @@ app.set('ws', wsServer)
 
 wsServer.on('connection', (clientSocket) => {
     console.log(`Cliente conectado con id: ${clientSocket.id}`)
+
+    // Escucho el evento 'deleteProduct' emitido por el cliente
+    clientSocket.on('deleteProduct', async (productId) => {
+        try {
+            const id = parseInt(productId);            
+            if (isNaN(id)) {
+                throw new Error('Invalid productId: ' + productId);
+            }            
+            await productsManager.deleteProduct(id);   
+            // Emitir evento 'productDeleted' a los clientes
+            wsServer.emit('productDeleted', id);                   
+        } catch (error) {
+            console.error('Error deleting product:', error);
+        }
+    });
     
 })
 

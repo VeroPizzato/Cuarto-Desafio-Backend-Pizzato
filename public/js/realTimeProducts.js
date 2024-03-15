@@ -1,12 +1,6 @@
-const ProductManager = require('../../src/ProductManager')
-
-const filenameProd = `${__dirname}/../../productos.json`
-const productsManager = new ProductManager(filenameProd)
-
 const socket = io();
 
-socket.on('newProduct', (product) => {
-  // Agregar el nuevo producto al HTML
+socket.on('newProduct', (product) => {  // Agregar el nuevo producto al HTML
   const container = document.getElementById('productsFeed');
   const newRow = container.querySelector('.row:last-child');
 
@@ -25,20 +19,27 @@ socket.on('newProduct', (product) => {
           <img src=${product.thumbnail} class="card-img-top" alt=${product.title} />
           <div class="card-body">
             <h6 class="card-text text-center">${product.title}</h6>
-            <h3 class="text-center">$ ${product.price}</h3>
+            <h4 class="text-center">$ ${product.price}</h4>
           </div>
+          <button class="btn btn-secondary text-center btn-eliminarProd" id="${id}">Eliminar</button>
         </div>
       </div>`
   );
 });
 
-document.addEventListener("DOMContentLoaded", function () {    
-  const select = document.querySelectorAll(".btn-eliminarProd")
-  select.forEach(btn => {
-      btn.addEventListener("click", function () {
-         console.log(btn.id)
-         productsManager.deleteProduct(btn.id);    
-      });
-  });
-})
+const listaProductos = document.getElementById('productsFeed');
+listaProductos.addEventListener('click', (event) => {
+  if (event.target.classList.contains('btn-eliminarProd')) {
+      const productId = event.target.getAttribute('id'); 
+      console.log('Product ID to delete:', productId);
+      socket.emit('deleteProduct', productId); // Emito evento 'deleteProduct' al servidor para borrar el producto
+  }
+});
 
+// Escucho el evento de 'productDeleted' proveniente del servidor y actualizo la vista '/realtimeproducts' eliminando el producto
+socket.on('productDeleted', (productId) => {
+  const productToDelete = document.getElementById(productId);
+  if (productToDelete) {
+      productToDelete.remove(); 
+  }
+});
