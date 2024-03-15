@@ -41,24 +41,24 @@ router.get('/realtimeproducts', async (_, res) => {
 });
 
 router.post('/realtimeproducts', async (req, res) => {
-    try {        
-        const product = req.body      
+    try {
+        const product = req.body
         // Agregar el producto en el ProductManager
         // Convertir el valor status a booleano
         var statusBoolean = (product.status === 'true');
         await productsManager.addProduct(
-            product.title, 
-            product.description, 
-            +product.price, 
-            product.thumbnail, 
-            product.code, 
-            +product.stock, 
-            statusBoolean, 
-            product.category);     
-           
-            // Notificar a los clientes mediante WS que se agrego un producto nuevo             
-            req.app.get('ws').emit('newProduct', product)            
-            res.status(201).json({ message: "Producto agregado correctamente" })       
+            product.title,
+            product.description,
+            +product.price,
+            product.thumbnail,
+            product.code,
+            +product.stock,
+            statusBoolean,
+            product.category);
+
+        // Notificar a los clientes mediante WS que se agrego un producto nuevo             
+        req.app.get('ws').emit('newProduct', product)
+        res.status(201).json({ message: "Producto agregado correctamente" })
     } catch (error) {
         console.error('Error al agregar el producto:', error);
     }
@@ -67,7 +67,7 @@ router.post('/realtimeproducts', async (req, res) => {
 router.get('/newProduct', async (_, res) => {
     res.render('newProduct', {
         title: 'Nuevo Producto',
-        })
+    })
 });
 
 module.exports = router

@@ -1,3 +1,8 @@
+const ProductManager = require('../../src/ProductManager')
+
+const filenameProd = `${__dirname}/../../productos.json`
+const productsManager = new ProductManager(filenameProd)
+
 const socket = io();
 
 socket.on('newProduct', (product) => {
@@ -26,4 +31,14 @@ socket.on('newProduct', (product) => {
       </div>`
   );
 });
+
+document.addEventListener("DOMContentLoaded", function () {    
+  const select = document.querySelectorAll(".btn-eliminarProd")
+  select.forEach(btn => {
+      btn.addEventListener("click", function () {
+         console.log(btn.id)
+         productsManager.deleteProduct(btn.id);    
+      });
+  });
+})
 
