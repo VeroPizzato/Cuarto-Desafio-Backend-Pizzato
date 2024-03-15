@@ -1,44 +1,30 @@
 const socket = io();
 
 socket.on('newProduct', (product) => {  // Agregar el nuevo producto al HTML
-  const listaProductos = document.getElementById('productsFeed');
-  const newProduct = document.createElement('li');
-  newProduct.innerHTML = `
-    <div class="col-md-3 my-4">
-        <div class="card alturaCaja img-product">
+  const listaProductos = document.getElementById('productsFeed');  
+  const newRow = listaProductos.querySelector('.row:last-child');
+
+  // Verificar si existe una fila existente
+  if (!newRow) {
+    // Si no existe, crea una nueva fila
+    newRow = document.createElement('div');
+    newRow.classList.add('row');
+    listaProductos.appendChild(newRow);
+  }
+
+  // Agregar el nuevo producto al final de la fila
+  newRow.insertAdjacentHTML('beforeend', `
+       <div class="col-md-3 my-4">
+         <div class="card alturaCaja img-product">
            <img src=${product.thumbnail} class="card-img-top" alt=${product.title} />
            <div class="card-body">
              <h6 class="card-text text-center">${product.title}</h6>
              <h4 class="text-center">$ ${product.price}</h4>
            </div>
            <button class="btn btn-secondary text-center btn-eliminarProd" id="${product.id}">Eliminar</button>
-        </div>
-    </div>`
-  listaProductos.appendChild(newProduct);
-
-  // const newRow = listaProductos.querySelector('.row:last-child');
-
-  // Verificar si existe una fila existente
-  // if (!newRow) {
-  //   // Si no existe, crea una nueva fila
-  //   newRow = document.createElement('div');
-  //   newRow.classList.add('row');
-  //   listaProductos.appendChild(newRow);
-  // }
-
-  // Agregar el nuevo producto al final de la fila
-  // newRow.insertAdjacentHTML('beforeend', `
-  //     <div class="col-md-3 my-4">
-  //       <div class="card alturaCaja img-product">
-  //         <img src=${product.thumbnail} class="card-img-top" alt=${product.title} />
-  //         <div class="card-body">
-  //           <h6 class="card-text text-center">${product.title}</h6>
-  //           <h4 class="text-center">$ ${product.price}</h4>
-  //         </div>
-  //         <button class="btn btn-secondary text-center btn-eliminarProd" id="${id}">Eliminar</button>
-  //       </div>
-  //     </div>`
-  // );
+         </div>
+       </div>`
+  );
 });
 
 const listaProductos = document.getElementById('productsFeed');
