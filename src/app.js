@@ -36,7 +36,8 @@ wsServer.on('connection', (clientSocket) => {
     // Escucho el evento 'deleteProduct' emitido por el cliente
     clientSocket.on('deleteProduct', async (productId) => {
         try {
-            const id = parseInt(productId);            
+            const id = parseInt(productId);  
+            console.log(productId)          
             if (isNaN(id)) {
                 throw new Error('Invalid productId: ' + productId);
             }            

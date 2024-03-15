@@ -8,6 +8,8 @@ const ProductManager = require('../ProductManager')
 const filenameProd = `${__dirname}/../../productos.json`
 const productsManager = new ProductManager(filenameProd)
 
+const { validarNuevoProducto } = require('./products')
+
 router.get('/home', async (_, res) => {
     try {
         const products = await productsManager.getProducts()
@@ -40,12 +42,16 @@ router.get('/realtimeproducts', async (_, res) => {
     }
 });
 
-router.post('/realtimeproducts', async (req, res) => {
+router.post('/realtimeproducts', validarNuevoProducto, async (req, res) => {
     try {
+        
         const product = req.body
         // Agregar el producto en el ProductManager
-        // Convertir el valor status a booleano
-        var statusBoolean = (product.status === 'true');
+        // Convertir el valor status "true" o "false" a booleano        
+        var boolStatus = JSON.parse(product.status)
+        product.thumbnail = ["/images/" + product.thumbnail]
+        product.price = +product.price
+        product.stock = +product.stock
         await productsManager.addProduct(
             product.title,
             product.description,
@@ -53,12 +59,13 @@ router.post('/realtimeproducts', async (req, res) => {
             product.thumbnail,
             product.code,
             +product.stock,
-            statusBoolean,
+            boolStatus,
             product.category);
 
         // Notificar a los clientes mediante WS que se agrego un producto nuevo             
-        req.app.get('ws').emit('newProduct', product)
-        res.status(201).json({ message: "Producto agregado correctamente" })
+        req.app.get('ws').emit('newProduct', product)        
+        res.redirect('/realtimeproducts')
+        // res.status(201).json({ message: "Producto agregado correctamente" })
     } catch (error) {
         console.error('Error al agregar el producto:', error);
     }
@@ -69,5 +76,10 @@ router.get('/newProduct', async (_, res) => {
         title: 'Nuevo Producto',
     })
 });
+
+const main = async () => {
+    await productsManager.inicialize()
+}
+main()
 
 module.exports = router

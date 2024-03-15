@@ -7,31 +7,35 @@ const filenameProd = `${__dirname}/../../productos.json`
 const productsManager = new ProductManager(filenameProd)
 
 // Middleware para validacion de datos al agregar un producto 
-async function validarNuevoProducto(req, res, next) {
-    const { title, description, price, thumbnail, code, stock, status, category } = req.body;
+async function validarNuevoProducto(req, res, next) {   
+    const product = req.body;
+    product.price = +product.price
+    product.stock = +product.stock       
+    product.thumbnail = [product.thumbnail]
+    var boolStatus = JSON.parse(product.status);     
 
-    if (!title || !description || !price || !code || !status || !category) {
+    if (!product.title || !product.description || !product.price || !product.code || !product.stock || !product.category)  {
         return res.status(400).json({ error: 'Todos los campos son obligatorios, salvo la ruta de la imagen' });
     }
-    if (isNaN(price) || isNaN(stock)) {
+    if (isNaN(product.price) || isNaN(product.stock)) {
         res.status(400).json({ error: "Invalid number format" })
         return
     }
-    if (!productsManager.soloNumPositivos(price)) {
+    if (!productsManager.soloNumPositivos(product.price)) {
         res.status(400).json({ error: "Precio negativo" })
         return
     }
-    if (!productsManager.soloNumPositivosYcero(stock)) {
+    if (!productsManager.soloNumPositivosYcero(product.stock)) {
         res.status(400).json({ error: "Stock negativo" })
         return
     }
-    if (!Array.isArray(thumbnail)) {
+    if (!Array.isArray(product.thumbnail)) {
         res.status(400).json({ error: "El campo thumbnail es invalido." })
         return
     }
     else {
         let rutasValidas = true
-        thumbnail.forEach(ruta => {
+        product.thumbnail.forEach(ruta => {
             if (typeof ruta != "string") {
                 rutasValidas = false;
                 return;
@@ -43,16 +47,16 @@ async function validarNuevoProducto(req, res, next) {
         }
     }
     const listadoProductos = await productsManager.getProducts()
-    const codeIndex = listadoProductos.findIndex(e => e.code === code)
+    const codeIndex = listadoProductos.findIndex(e => e.code === product.code)
     if (codeIndex !== -1) {
         res.status(400).json({ error: "Codigo ya existente" })
         return
     }
-    if (!productsManager.soloNumYletras(code)) {
+    if (!productsManager.soloNumYletras(product.code)) {
         res.status(400).json({ error: "El campo codigo identificador es invalido." })
         return
     }
-    if (typeof status != "boolean") {
+    if (typeof boolStatus != "boolean") {
         res.status(400).json({ error: "El campo status es invalido." })
         return
     }
@@ -195,4 +199,4 @@ const main = async () => {
 }
 main()
 
-module.exports = { router, productsManager };
+module.exports = { router, productsManager, validarNuevoProducto };
